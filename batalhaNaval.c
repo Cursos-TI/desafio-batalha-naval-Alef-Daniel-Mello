@@ -1,25 +1,44 @@
 #include <stdio.h>
 
-    int *T[5][5];
+    #define TamanhoX 10
+    #define TamanhoY 10
+    
+    int *T[TamanhoX][TamanhoY];
     int NH[2]; // - Navio Horizontal
     int NV[2]; // - Navio Vertical
+    int D1[2]; // - Navio Diagonal 1
+    int D2[2]; // - Navio Diagonal 2
 
 
 void exibirtabuleiro(){
 
-    for (int X=0,Y=0; X < 6 && Y < 6; X++)  // Função para exibir o tabuleiro
+    for (int X=0,Y=0; X < TamanhoX+1 && Y < TamanhoY+1; X++)  // Função para exibir o tabuleiro
     {
         if (X == 0 && Y == 0)
         {
-                printf("\nEstado do tabuleiro :\n  X T 1 2 3 4\nY   | | | | |\n");
+            printf("\nEstado do tabuleiro :\n  X ");
+            for (int L = 0; Y == 0 && L < TamanhoY; L++)
+            {
+             printf("%d ",L);
+            }
+
+            printf("\nY   ");
+
+            for (int L = 0; Y == 0 && L < TamanhoY; L++)
+            {
+             printf("| ",L);
+            }
+             printf("\n");
+      
+                
         }
         
-        if(X == 5 && Y < 4){
+        if(X == TamanhoX && Y < TamanhoY-1){
             X = 0;
             Y++;
             printf("\n");
         }
-        if(X < 5 && Y < 5)
+        if(X < TamanhoX && Y < TamanhoY)
         {
             if (X == 0)
             {
@@ -31,17 +50,97 @@ void exibirtabuleiro(){
     }
     printf("\n"); 
 }
+void configurardiag2(){
+printf("Insira a posição X que o Navio Diagonal 2 irá ficar, começando do lado Esquerdo Superior :");
+    scanf("%d", &D2[0]);
+    if (D2[0] < TamanhoX-1 && D2[0] >= 0)
+    {
+        printf("Entrada aceita!\n");
+        printf("Insira a posição Y que ficará o Navio Diagonal :");
+        scanf("%d",&D2[1]);
+
+        if (D2[1] < TamanhoY-1 && D2[1] >= 0)
+        {
+            if(T[D2[0]][D2[1]] == 0 && T[D2[0]+1][D2[1]+1] == 0){
+             printf("Entrada aceita!\n\n");
+             printf("Posicionando Navio Diagonal...\n");
+             T[D2[0]][D2[1]] = 3;
+             T[D2[0]+1][D2[1]+1] = 3;
+
+              exibirtabuleiro();
+            }
+        else
+        {
+           printf("Posição ocupada! selecione o Navio Vertical novamente!\n");
+           configurardiag2();
+        }
+        
+        }
+        else{
+         printf("\nEntrada incorreta! Por favor, insira o número correto ao selecionar a posição diagonal!\n");
+         printf("Vamos tentar do inicio novamente!\n");
+
+         configurardiag2();
+        }
+    }
+    else{
+    printf("Entrada incorreta! Por favor, insira o número correto ao selecionar a posição diagonal!\n");
+    configurardiag2();
+    }
+
+}
+
+void configurardiag1(){
+printf("Insira a posição X que o Navio Diagonal 1 irá ficar, começando do lado Esquerdo Superior :");
+    scanf("%d", &D1[0]);
+    if (D1[0] < TamanhoX-1 && D1[0] >= 0)
+    {
+        printf("Entrada aceita!\n");
+        printf("Insira a posição Y que ficará o Navio Diagonal :");
+        scanf("%d",&D1[1]);
+
+        if (D1[1] < TamanhoY-1 && D1[1] >= 0)
+        {
+            if(T[D1[0]][D1[1]] == 0 && T[D1[0]+1][D1[1]+1] == 0){
+             printf("Entrada aceita!\n\n");
+             printf("Posicionando Navio Diagonal...\n");
+             T[D1[0]][D1[1]] = 3;
+             T[D1[0]+1][D1[1]+1] = 3;
+
+              exibirtabuleiro();
+              configurardiag2();
+            }
+        else
+        {
+           printf("Posição ocupada! selecione o Navio Vertical novamente!\n");
+           configurardiag1();
+        }
+        
+        }
+        else{
+         printf("\nEntrada incorreta! Por favor, insira o número correto ao selecionar a posição diagonal!\n");
+         printf("Vamos tentar do inicio novamente!\n");
+
+         configurardiag1();
+        }
+    }
+    else{
+    printf("Entrada incorreta! Por favor, insira o número correto ao selecionar a posição diagonal!\n");
+    configurardiag1();
+    }
+
+}
 void configurarnv(){
 
     printf("Insira a posição X que o Navio Vertical irá ficar, de cima para baixo :");
     scanf("%d", &NV[0]);
-    if (NV[0] < 5 && NV[0] >= 0)
+    if (NV[0] < TamanhoX && NV[0] >= 0)
     {
         printf("Entrada aceita!\n");
         printf("Insira a posição Y que ficará o Navio Vertical :");
         scanf("%d",&NV[1]);
 
-        if (NV[1] < 4 && NH[1] >= 0)
+        if (NV[1] < TamanhoY-1 && NV[1] >= 0)
         {
             if(T[NV[0]][NV[1]] == 0 && T[NV[0]][NV[1]+1] == 0){
              printf("Entrada aceita!\n\n");
@@ -50,7 +149,7 @@ void configurarnv(){
              T[NV[0]][NV[1]+1] = 3;
 
               exibirtabuleiro();
-
+              configurardiag1();
             }
         else
         {
@@ -76,13 +175,13 @@ void configurarnh(){
 
     printf("Insira a posição X que o Navio Horizontal irá ficar, da esquerda para direita :");
     scanf("%d", &NH[0]);
-    if (NH[0] < 4 && NH[0] >= 0)
+    if (NH[0] < TamanhoX-1 && NH[0] >= 0)
     {
         printf("Entrada aceita!\n");
         printf("Insira a posição Y que ficará o Navio Horizontal :");
         scanf("%d",&NH[1]);
 
-        if (NH[1] < 5 && NH[1] >= 0)
+        if (NH[1] < TamanhoY && NH[1] >= 0)
         {
         printf("Entrada aceita!\n\n");
         printf("Posicionando Navio Horizontal...\n");
@@ -105,6 +204,7 @@ void configurarnh(){
     }
 
 }
+
 
 int main() {
     
