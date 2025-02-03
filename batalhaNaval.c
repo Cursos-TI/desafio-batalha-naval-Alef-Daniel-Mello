@@ -9,6 +9,26 @@
     int D1[2]; // - Navio Diagonal 1
     int D2[2]; // - Navio Diagonal 2
 
+    int H; // Habilidade escolhida
+    int Hpos[2];
+
+    int HC[3][5] = { // Habilidade de Cone
+      {0,0,1,0,0},
+      {0,1,1,1,0},
+      {1,1,1,1,1}
+    }; 
+    int HO[3][5] = { // Habilidade de Octaedro
+      {0,0,1,0,0},
+      {0,1,1,1,0},
+      {0,0,1,0,0}
+    }; 
+    int HZ[3][5] = { // Habilidade de Cruz
+      {0,0,1,0,0},
+      {1,1,1,1,1},
+      {0,0,1,0,0}
+    };
+
+    // Possivel criar um novo padrão para a habilidade
 
 void exibirtabuleiro(){
 
@@ -50,6 +70,144 @@ void exibirtabuleiro(){
     }
     printf("\n"); 
 }
+
+void habilidade(){
+    printf("\nVamos utilizar uma Habilidade! Selecione o numero correspondente :");
+    printf("\n1 - Ataque em Cone\n{0,0,1,0,0}\n{0,1,1,1,0}\n{1,1,1,1,1}");
+    printf("\n2 - Ataque em Octaedro\n{0,0,1,0,0}\n{0,1,1,1,0}\n{0,0,1,0,0}");
+    printf("\n3 - Ataque em Cruz\n{0,0,1,0,0}\n{1,1,1,1,1}\n{0,0,1,0,0}\n\n");
+
+    scanf("%d",&H);
+
+    printf("\nAgora escolha o local de ataque! Escolha o local do centro do ataque, respeitando as bordas");
+    exibirtabuleiro();
+   printf("\nEscolha o local em X : ");
+   if (H == 1)
+   {
+    scanf("%d",&Hpos[0]);
+
+        if (Hpos[0] < TamanhoX-2 && Hpos[0] >= 2)
+        {
+        printf("Entrada aceita!\n");
+        printf("Escolha o local em Y : ");
+        scanf("%d",&Hpos[1]);
+
+        if (Hpos[1] < TamanhoY-1 && Hpos[1] >= 1)
+        {
+        printf("Entrada aceita!\n\n");
+        printf("Usando Habilidade!\n");
+        for (int y = 0; y < 3; y++) 
+        {
+            for (int x = 0;x < 5; x++)
+            {
+                if(HC[y][x]!=0){
+                 T[(Hpos[0]+(x-2))][(Hpos[1]+(y-1))] = HC[y][x];
+                }
+            }
+            
+        }
+
+        exibirtabuleiro();
+
+        }
+        else{
+         printf("Entrada incorreta! Por favor, selecione um local correto!\n");
+         printf("Vamos tentar do inicio novamente!\n");
+
+         habilidade();
+        }
+    }
+    else{
+    printf("\nEntrada incorreta! Por favor, insira um local adequado!\n");
+    habilidade();
+    }
+   }
+   else if (H == 2)
+   {
+    scanf("%d",&Hpos[0]);
+
+        if (Hpos[0] < TamanhoX-1 && Hpos[0] >= 1)
+        {
+        printf("Entrada aceita!\n");
+        printf("Escolha o local em Y : ");
+        scanf("%d",&Hpos[1]);
+
+        if (Hpos[1] < TamanhoY-1 && Hpos[1] >= 1)
+        {
+        printf("Entrada aceita!\n\n");
+        printf("Usando Habilidade!\n");
+        for (int y = 0; y < 3; y++) 
+        {
+            for (int x = 0;x < 5; x++)
+            {
+                if(HO[y][x]!=0){
+                 T[(Hpos[0]+(x-2))][(Hpos[1]+(y-1))] = HO[y][x];
+                }
+            }
+            
+        }
+
+        exibirtabuleiro();
+
+        }
+        else{
+         printf("Entrada incorreta! Por favor, selecione um local correto!\n");
+         printf("Vamos tentar do inicio novamente!\n");
+
+         habilidade();
+        }
+    }
+    else{
+    printf("\nEntrada incorreta! Por favor, insira um local adequado!\n");
+    habilidade();
+    }
+   }
+   else  if (H == 3)
+   {
+    scanf("%d",&Hpos[0]);
+
+        if (Hpos[0] < TamanhoX-2 && Hpos[0] >= 2)
+        {
+        printf("Entrada aceita!\n");
+        printf("Escolha o local em Y : ");
+        scanf("%d",&Hpos[1]);
+
+        if (Hpos[1] < TamanhoY-1 && Hpos[1] >= 1)
+        {
+        printf("Entrada aceita!\n\n");
+        printf("Usando Habilidade!\n");
+        for (int y = 0; y < 3; y++) 
+        {
+            for (int x = 0;x < 5; x++)
+            {
+                if(HZ[y][x]!=0){
+                 T[(Hpos[0]+(x-2))][(Hpos[1]+(y-1))] = HZ[y][x];
+                }
+            }
+            
+        }
+
+        exibirtabuleiro();
+
+        }
+        else{
+         printf("Entrada incorreta! Por favor, selecione um local correto!\n");
+         printf("Vamos tentar do inicio novamente!\n");
+
+         habilidade();
+        }
+    }
+    else{
+    printf("\nEntrada incorreta! Por favor, insira um local adequado!\n");
+    habilidade();
+    }
+   }
+  else{
+    printf("\nSeleção invalida! Selecione novamente!\n");
+    habilidade();
+  }
+
+}
 void configurardiag2(){
 printf("Insira a posição X que o Navio Diagonal 2 irá ficar, começando do lado Esquerdo Superior :");
     scanf("%d", &D2[0]);
@@ -68,6 +226,7 @@ printf("Insira a posição X que o Navio Diagonal 2 irá ficar, começando do la
              T[D2[0]+1][D2[1]+1] = 3;
 
               exibirtabuleiro();
+              habilidade();
             }
         else
         {
@@ -89,7 +248,6 @@ printf("Insira a posição X que o Navio Diagonal 2 irá ficar, começando do la
     }
 
 }
-
 void configurardiag1(){
 printf("Insira a posição X que o Navio Diagonal 1 irá ficar, começando do lado Esquerdo Superior :");
     scanf("%d", &D1[0]);
@@ -214,32 +372,6 @@ int main() {
     printf("Para definir as posições, use as letras como guia, sendo X as posições horizontais e Y as posições verticais!\n\n");
 
     configurarnh();
-
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
-
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
-
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
-
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
 
     return 0;
 }
